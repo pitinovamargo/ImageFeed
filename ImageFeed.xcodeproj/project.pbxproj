@@ -12,6 +12,7 @@
 		643E51CD29D1CF8000A44133 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 643E51C529D1CF8000A44133 /* Main.storyboard */; };
 		643E51CE29D1CF8000A44133 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643E51C729D1CF8000A44133 /* AppDelegate.swift */; };
 		643E51D029D1CF8000A44133 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643E51C929D1CF8000A44133 /* SceneDelegate.swift */; };
+		644F0F5E29D31FF100644EDC /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 644F0F5D29D31FF100644EDC /* GradientView.swift */; };
 		648750B829C88C6900DCB64A /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648750B729C88C6900DCB64A /* ImagesListViewController.swift */; };
 		648750E929D0EBB200DCB64A /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648750E829D0EBB200DCB64A /* UIColor+Extensions.swift */; };
 		648750EB29D1C55700DCB64A /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 648750EA29D1C55700DCB64A /* ImagesListCell.swift */; };
@@ -26,6 +27,7 @@
 		643E51C629D1CF8000A44133 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		643E51C729D1CF8000A44133 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		643E51C929D1CF8000A44133 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		644F0F5D29D31FF100644EDC /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		648750B029C88C6900DCB64A /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		648750B729C88C6900DCB64A /* ImagesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListViewController.swift; sourceTree = "<group>"; };
 		648750E829D0EBB200DCB64A /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				648750B729C88C6900DCB64A /* ImagesListViewController.swift */,
+				644F0F5D29D31FF100644EDC /* GradientView.swift */,
 				648750EA29D1C55700DCB64A /* ImagesListCell.swift */,
 				643E51C529D1CF8000A44133 /* Main.storyboard */,
 			);
@@ -178,6 +181,7 @@
 			files = (
 				643E51CE29D1CF8000A44133 /* AppDelegate.swift in Sources */,
 				643E51D029D1CF8000A44133 /* SceneDelegate.swift in Sources */,
+				644F0F5E29D31FF100644EDC /* GradientView.swift in Sources */,
 				648750B829C88C6900DCB64A /* ImagesListViewController.swift in Sources */,
 				648750EB29D1C55700DCB64A /* ImagesListCell.swift in Sources */,
 				648750E929D0EBB200DCB64A /* UIColor+Extensions.swift in Sources */,

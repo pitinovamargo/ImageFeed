@@ -10,10 +10,16 @@ import UIKit
 class ImagesListViewController: UIViewController {
 
     @IBOutlet private var tableView: UITableView!
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
+        
+        let newLayer = CAGradientLayer()
+        newLayer.colors = [UIColor.ypBlack.cgColor, UIColor.ypBackground.cgColor]
+        newLayer.frame = view.frame
+        
+        view.layer.insertSublayer(newLayer, at: 0)
+            }
 
     func configCell(for cell: ImagesListCell) { }
     
