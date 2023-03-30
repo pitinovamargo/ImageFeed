@@ -35,7 +35,7 @@ class GradientView: UIView {
         
         layer.cornerRadius = 16
         layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        
-        layer.frame = CGRect(x: 20, y: 113, width: 353, height: 30)
+        print(layer.superlayer?.bounds.width ?? 0)
+        layer.frame = CGRect(x: 0, y: 113, width: layer.superlayer?.bounds.width ?? 50, height: 30)
     }
 }
