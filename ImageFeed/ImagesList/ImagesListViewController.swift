@@ -9,7 +9,7 @@ import UIKit
 
 class ImagesListViewController: UIViewController {
     
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet weak private var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     
@@ -26,7 +26,7 @@ class ImagesListViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
     
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+    private func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         
         if let image = UIImage(named: "\(indexPath.row)") {
             cell.cellImage.image = image
