@@ -48,8 +48,8 @@
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ev-Hd-UYt" userLabel="Like Button">
-                                                    <rect key="frame" x="356" y="0.0" width="42" height="42"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ev-Hd-UYt" userLabel="Like Button">
+                                                    <rect key="frame" x="356" y="4" width="42" height="42"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="Red Like"/>
                                                 </button>
@@ -57,13 +57,13 @@
                                             <constraints>
                                                 <constraint firstItem="lk8-UC-SKn" firstAttribute="leading" secondItem="8tI-eq-Lg4" secondAttribute="leading" constant="8" id="GQ3-yw-6XP"/>
                                                 <constraint firstItem="4ev-Hd-UYt" firstAttribute="top" secondItem="8tI-eq-Lg4" secondAttribute="top" id="H2Y-2S-oOg"/>
-                                                <constraint firstItem="8tI-eq-Lg4" firstAttribute="leading" secondItem="S4A-EQ-rvt" secondAttribute="leadingMargin" id="R6q-Eh-P87"/>
-                                                <constraint firstItem="4ev-Hd-UYt" firstAttribute="trailing" secondItem="8tI-eq-Lg4" secondAttribute="trailing" id="ShF-Co-jVt"/>
+                                                <constraint firstItem="8tI-eq-Lg4" firstAttribute="leading" secondItem="S4A-EQ-rvt" secondAttribute="leading" constant="16" id="R6q-Eh-P87"/>
+                                                <constraint firstItem="8tI-eq-Lg4" firstAttribute="trailing" secondItem="4ev-Hd-UYt" secondAttribute="trailing" id="ShF-Co-jVt"/>
                                                 <constraint firstItem="8tI-eq-Lg4" firstAttribute="bottom" secondItem="lk8-UC-SKn" secondAttribute="bottom" constant="8" id="TYS-a2-nhx"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="8tI-eq-Lg4" secondAttribute="trailing" id="eMB-Kp-4M2"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="8tI-eq-Lg4" secondAttribute="bottom" id="kja-lq-mKY"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lk8-UC-SKn" secondAttribute="trailing" id="sR8-pD-k7V"/>
-                                                <constraint firstItem="8tI-eq-Lg4" firstAttribute="top" secondItem="S4A-EQ-rvt" secondAttribute="topMargin" id="uy0-lW-ubc"/>
+                                                <constraint firstAttribute="trailing" secondItem="8tI-eq-Lg4" secondAttribute="trailing" constant="16" id="eMB-Kp-4M2"/>
+                                                <constraint firstAttribute="bottom" secondItem="8tI-eq-Lg4" secondAttribute="bottom" constant="4" id="kja-lq-mKY"/>
+                                                <constraint firstItem="8tI-eq-Lg4" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lk8-UC-SKn" secondAttribute="trailing" constant="8" id="sR8-pD-k7V"/>
+                                                <constraint firstItem="8tI-eq-Lg4" firstAttribute="top" secondItem="S4A-EQ-rvt" secondAttribute="top" constant="4" id="uy0-lW-ubc"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="YP Black"/>
