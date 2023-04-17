@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6416925429E8AB8100225424 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6416925329E8AB8100225424 /* ProfileViewController.swift */; };
 		643E51CB29D1CF8000A44133 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 643E51C229D1CF8000A44133 /* Assets.xcassets */; };
 		643E51CC29D1CF8000A44133 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 643E51C329D1CF8000A44133 /* LaunchScreen.storyboard */; };
 		643E51CD29D1CF8000A44133 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 643E51C529D1CF8000A44133 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6416925329E8AB8100225424 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		6418472C29D1EC4100C5FCF2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		643E51C229D1CF8000A44133 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		643E51C429D1CF8000A44133 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 			children = (
 				648750B729C88C6900DCB64A /* ImagesListViewController.swift */,
 				648750EA29D1C55700DCB64A /* ImagesListCell.swift */,
+				6416925329E8AB8100225424 /* ProfileViewController.swift */,
 				643E51C529D1CF8000A44133 /* Main.storyboard */,
 			);
 			path = ImagesList;
@@ -176,6 +179,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6416925429E8AB8100225424 /* ProfileViewController.swift in Sources */,
 				643E51CE29D1CF8000A44133 /* AppDelegate.swift in Sources */,
 				643E51D029D1CF8000A44133 /* SceneDelegate.swift in Sources */,
 				648750B829C88C6900DCB64A /* ImagesListViewController.swift in Sources */,
