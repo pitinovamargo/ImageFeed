@@ -71,9 +71,43 @@
                     <view key="view" contentMode="scaleToFill" id="uhO-O5-7SK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmd-xH-2I0">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" name="YP White"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wjb-er-0Eb" userLabel="nav_back_button">
+                                <rect key="frame" x="8" y="56" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="0OL-Dd-HMC"/>
+                                    <constraint firstAttribute="height" constant="48" id="Ysb-HO-9nc"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="nav_back_button"/>
+                                <connections>
+                                    <action selector="didTapBackButton:" destination="eRp-dS-wQq" eventType="touchUpInside" id="32y-yq-aHT"/>
+                                    <action selector="didTapBackButton:" destination="IH6-k2-hxh" eventType="touchUpInside" id="szt-5R-dFA"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vLa-p8-efR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Wjb-er-0Eb" firstAttribute="leading" secondItem="vLa-p8-efR" secondAttribute="leading" constant="8" id="7Sb-fX-cwZ"/>
+                            <constraint firstAttribute="bottom" secondItem="kmd-xH-2I0" secondAttribute="bottom" id="80f-IG-AEL"/>
+                            <constraint firstAttribute="trailing" secondItem="kmd-xH-2I0" secondAttribute="trailing" id="Nz3-PL-jPw"/>
+                            <constraint firstItem="kmd-xH-2I0" firstAttribute="leading" secondItem="uhO-O5-7SK" secondAttribute="leading" id="Rv0-Wy-5jT"/>
+                            <constraint firstItem="Wjb-er-0Eb" firstAttribute="top" secondItem="vLa-p8-efR" secondAttribute="top" constant="8" id="Was-NS-ciI"/>
+                            <constraint firstItem="kmd-xH-2I0" firstAttribute="top" secondItem="uhO-O5-7SK" secondAttribute="top" id="Zy5-2H-4zz"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="webView" destination="kmd-xH-2I0" id="eUG-Q6-n7i"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wvi-tK-KxJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -192,14 +226,14 @@
                                     <outlet property="delegate" destination="IH6-k2-hxh" id="uzy-3S-X6C"/>
                                 </connections>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RA-8Z-BEf">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RA-8Z-BEf" userLabel="nav_back_button">
                                 <rect key="frame" x="8" y="56" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="9be-aT-UQm"/>
                                     <constraint firstAttribute="height" constant="48" id="bWe-yl-Hz4"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Backward"/>
+                                <state key="normal" image="nav_back_button"/>
                                 <connections>
                                     <action selector="didTapBackButton:" destination="IH6-k2-hxh" eventType="touchUpInside" id="7eW-CR-twY"/>
                                 </connections>
@@ -295,10 +329,10 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="Backward" width="24" height="24"/>
         <image name="Logo_of_Unsplash" width="60" height="60"/>
         <image name="Red Like" width="42" height="42"/>
         <image name="Sharing_button" width="50" height="50"/>
+        <image name="nav_back_button" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">
