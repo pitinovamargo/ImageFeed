@@ -20,6 +20,8 @@
 		6491D12329D1DFE1006FF1C6 /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6491D12129D1DFE1006FF1C6 /* SF-Pro-Display-Bold.otf */; };
 		6491D12429D1DFE1006FF1C6 /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6491D12229D1DFE1006FF1C6 /* SF-Pro-Display-Regular.otf */; };
 		64C30CDE2A1CD82800D106AF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C30CDD2A1CD82800D106AF /* Constants.swift */; };
+		64E21BA22A1EC3E0009FE150 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21BA12A1EC3E0009FE150 /* AuthViewController.swift */; };
+		64E21BA42A1EC441009FE150 /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21BA32A1EC441009FE150 /* WebViewViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		6491D12129D1DFE1006FF1C6 /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
 		6491D12229D1DFE1006FF1C6 /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
 		64C30CDD2A1CD82800D106AF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		64E21BA12A1EC3E0009FE150 /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		64E21BA32A1EC441009FE150 /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				643E51C529D1CF8000A44133 /* Main.storyboard */,
+				64C30CDD2A1CD82800D106AF /* Constants.swift */,
+				64C30CE12A1EB98500D106AF /* Auth */,
 				648750EC29D1C59800DCB64A /* ImagesList */,
 				64CFA8C72A13A295004111F7 /* SingleImageView */,
 				6435A09B2A06D7A70046CC92 /* Profile */,
@@ -75,7 +81,6 @@
 		648750A729C88C6900DCB64A = {
 			isa = PBXGroup;
 			children = (
-				64C30CDD2A1CD82800D106AF /* Constants.swift */,
 				643E51C029D1CF8000A44133 /* ImageFeed */,
 				648750B129C88C6900DCB64A /* Products */,
 			);
@@ -118,6 +123,15 @@
 				643E51C929D1CF8000A44133 /* SceneDelegate.swift */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		64C30CE12A1EB98500D106AF /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				64E21BA12A1EC3E0009FE150 /* AuthViewController.swift */,
+				64E21BA32A1EC441009FE150 /* WebViewViewController.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		64CFA8C72A13A295004111F7 /* SingleImageView */ = {
@@ -201,7 +215,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64E21BA42A1EC441009FE150 /* WebViewViewController.swift in Sources */,
 				6416925429E8AB8100225424 /* ProfileViewController.swift in Sources */,
+				64E21BA22A1EC3E0009FE150 /* AuthViewController.swift in Sources */,
 				643E51CE29D1CF8000A44133 /* AppDelegate.swift in Sources */,
 				643E51D029D1CF8000A44133 /* SceneDelegate.swift in Sources */,
 				6450E7C12A139DAC00E5CD5F /* SingleImageViewController.swift in Sources */,
