@@ -87,25 +87,33 @@
                                     <constraint firstAttribute="height" constant="48" id="Ysb-HO-9nc"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="nav_back_button"/>
+                                <state key="normal" image="nav_back_button_black"/>
                                 <connections>
                                     <action selector="didTapBackButton:" destination="eRp-dS-wQq" eventType="touchUpInside" id="32y-yq-aHT"/>
                                     <action selector="didTapBackButton:" destination="IH6-k2-hxh" eventType="touchUpInside" id="szt-5R-dFA"/>
                                 </connections>
                             </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ykt-wv-0Gs">
+                                <rect key="frame" x="0.0" y="104" width="414" height="4"/>
+                                <color key="progressTintColor" name="YP Black"/>
+                            </progressView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vLa-p8-efR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Wjb-er-0Eb" firstAttribute="leading" secondItem="vLa-p8-efR" secondAttribute="leading" constant="8" id="7Sb-fX-cwZ"/>
                             <constraint firstAttribute="bottom" secondItem="kmd-xH-2I0" secondAttribute="bottom" id="80f-IG-AEL"/>
+                            <constraint firstAttribute="trailing" secondItem="ykt-wv-0Gs" secondAttribute="trailing" id="8hO-gf-lkN"/>
+                            <constraint firstItem="ykt-wv-0Gs" firstAttribute="top" secondItem="Wjb-er-0Eb" secondAttribute="bottom" id="BO7-5Q-PQq"/>
                             <constraint firstAttribute="trailing" secondItem="kmd-xH-2I0" secondAttribute="trailing" id="Nz3-PL-jPw"/>
                             <constraint firstItem="kmd-xH-2I0" firstAttribute="leading" secondItem="uhO-O5-7SK" secondAttribute="leading" id="Rv0-Wy-5jT"/>
                             <constraint firstItem="Wjb-er-0Eb" firstAttribute="top" secondItem="vLa-p8-efR" secondAttribute="top" constant="8" id="Was-NS-ciI"/>
                             <constraint firstItem="kmd-xH-2I0" firstAttribute="top" secondItem="uhO-O5-7SK" secondAttribute="top" id="Zy5-2H-4zz"/>
+                            <constraint firstItem="ykt-wv-0Gs" firstAttribute="leading" secondItem="uhO-O5-7SK" secondAttribute="leading" id="xtv-x0-30q"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="progressView" destination="ykt-wv-0Gs" id="Xvv-hT-uE6"/>
                         <outlet property="webView" destination="kmd-xH-2I0" id="eUG-Q6-n7i"/>
                     </connections>
                 </viewController>
@@ -333,6 +341,7 @@
         <image name="Red Like" width="42" height="42"/>
         <image name="Sharing_button" width="50" height="50"/>
         <image name="nav_back_button" width="24" height="24"/>
+        <image name="nav_back_button_black" width="24" height="24"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">

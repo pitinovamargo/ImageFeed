@@ -14,6 +14,8 @@ fileprivate let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authori
 class WebViewViewController: UIViewController {
     
     @IBOutlet private var webView: WKWebView!
+    @IBOutlet private var progressView: UIProgressView!
+    
     @IBAction private func didTapBackButton(_ sender: Any?) {
         delegate?.webViewViewControllerDidCancel(self)
     }
