@@ -30,7 +30,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         OAuth2Service().fetchAuthToken(code) { result in
             switch result {
             case .success(let accessToken):
-                UserDefaults.standard.set(accessToken, forKey: OAuthTokenResponseBody.CodingKeys.accessToken.rawValue)
+                OAuth2TokenStorage().token = accessToken
             case .failure(let error):
                 print("Failed: \(error)")
             }
