@@ -27,10 +27,18 @@ class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        
+        OAuth2Service().fetchAuthToken(code) { result in
+            switch result {
+            case .success(let accessToken):
+                UserDefaults.standard.set(accessToken, forKey: OAuthTokenResponseBody.CodingKeys.accessToken.rawValue)
+            case .failure(let error):
+                print("Failed: \(error)")
+            }
+        }
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
         dismiss(animated: true)
     }
 }
+
