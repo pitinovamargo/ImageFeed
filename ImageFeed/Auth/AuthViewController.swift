@@ -9,6 +9,7 @@ import UIKit
 
 class AuthViewController: UIViewController {
     let showWebViewIdentifier = "ShowWebView"
+    var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +32,10 @@ extension AuthViewController: WebViewViewControllerDelegate {
             switch result {
             case .success(let accessToken):
                 OAuth2TokenStorage().token = accessToken
+                self.delegate?.navigateToTheNextView()
             case .failure(let error):
                 print("Failed: \(error)")
+                break
             }
         }
     }
@@ -42,3 +45,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
     }
 }
 
+protocol AuthViewControllerDelegate {
+    func navigateToTheNextView()
+}
