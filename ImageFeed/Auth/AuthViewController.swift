@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import ProgressHUD
 
 class AuthViewController: UIViewController {
     let showWebViewIdentifier = "ShowWebView"
-    var delegate: AuthViewControllerDelegate?
+    weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,16 +29,7 @@ class AuthViewController: UIViewController {
 
 extension AuthViewController: WebViewViewControllerDelegate {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        OAuth2Service().fetchAuthToken(code) { result in
-            switch result {
-            case .success(let accessToken):
-                OAuth2TokenStorage().token = accessToken
-                self.delegate?.navigateToTheNextView()
-            case .failure(let error):
-                print("Failed: \(error)")
-                break
-            }
-        }
+        delegate?.acceptToken(code: code)
     }
     
     func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
@@ -45,6 +37,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
     }
 }
 
-protocol AuthViewControllerDelegate {
-    func navigateToTheNextView()
+protocol AuthViewControllerDelegate: AnyObject {
+    func acceptToken(code: String)
 }

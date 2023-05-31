@@ -16,7 +16,7 @@ class OAuth2Service {
         let request = makeRequest(code)
         callUnsplash(request: request) { (result: Result<Data, Error>)  in
             let parsed = result.flatMap { data -> Result<String, Error> in
-                Result{ try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data).accessToken}
+                Result{ try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data).accessToken }
             }
             completion(parsed)
         }
@@ -42,22 +42,23 @@ class OAuth2Service {
         request: URLRequest,
         responseHandler: @escaping (Result<Data, Error>) -> Void
     ) {
+        let fulfillCompletion: (Result<Data, Error>) -> Void = { result in
+            DispatchQueue.main.async {
+                responseHandler(result)
+            }
+        }
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
-                print("Error has occurred: \(error)")
-                return
+                fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
             }
             if let responseCode = (response as? HTTPURLResponse)?.statusCode {
                 if 200..<300 ~= responseCode {
                 } else {
-                    print("Response status code: \(responseCode)")
-                    return
+                    fulfillCompletion(.failure(NetworkError.httpStatusCode(responseCode)))
                 }
             }
             if let data = data {
-                DispatchQueue.main.async {
-                    responseHandler(.success(data))
-                }
+                fulfillCompletion(.success(data))
             }
         }
         task.resume()
@@ -76,4 +77,9 @@ struct OAuthTokenResponseBody: Decodable {
         case scope
         case createdAt = "created_at"
     }
+}
+
+enum NetworkError: Error {
+    case httpStatusCode(Int)
+    case urlRequestError(Error)
 }
