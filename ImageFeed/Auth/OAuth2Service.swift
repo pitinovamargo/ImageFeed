@@ -9,10 +9,18 @@ import Foundation
 
 class OAuth2Service {
     
+    private var lastCode: String?
+    private var currentTask: URLSessionTask?
+    
     func fetchAuthToken(
         _ code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
+        assert(Thread.isMainThread)
+        if lastCode == code { return }
+        currentTask?.cancel()
+        lastCode = code
+        
         let request = makeRequest(code)
         callUnsplash(request: request) { (result: Result<Data, Error>)  in
             let parsed = result.flatMap { data -> Result<String, Error> in
@@ -42,25 +50,26 @@ class OAuth2Service {
         request: URLRequest,
         responseHandler: @escaping (Result<Data, Error>) -> Void
     ) {
-        let fulfillCompletion: (Result<Data, Error>) -> Void = { result in
-            DispatchQueue.main.async {
-                responseHandler(result)
-            }
-        }
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
-            }
-            if let responseCode = (response as? HTTPURLResponse)?.statusCode {
-                if 200..<300 ~= responseCode {
-                } else {
-                    fulfillCompletion(.failure(NetworkError.httpStatusCode(responseCode)))
+            DispatchQueue.main.async {
+                if let data = data {
+                    responseHandler(.success(data))
+                }
+                self.currentTask = nil
+                if let error = error {
+                    responseHandler(.failure(NetworkError.urlRequestError(error)))
+                    self.lastCode = nil
+                }
+                if let responseCode = (response as? HTTPURLResponse)?.statusCode {
+                    if 200..<300 ~= responseCode {
+                    } else {
+                        responseHandler(.failure(NetworkError.httpStatusCode(responseCode)))
+                        self.lastCode = nil
+                    }
                 }
             }
-            if let data = data {
-                fulfillCompletion(.success(data))
-            }
         }
+        self.currentTask = task
         task.resume()
     }
 }

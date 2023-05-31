@@ -26,6 +26,7 @@
 		64E21BA82A24B37C009FE150 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21BA72A24B37C009FE150 /* OAuth2TokenStorage.swift */; };
 		64E21BAA2A25460A009FE150 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21BA92A25460A009FE150 /* SplashViewController.swift */; };
 		64E21BAD2A263428009FE150 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 64E21BAC2A263428009FE150 /* ProgressHUD */; };
+		64E21BAF2A27EDDE009FE150 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21BAE2A27EDDE009FE150 /* UIBlockingProgressHUD.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		64E21BA52A24A23C009FE150 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		64E21BA72A24B37C009FE150 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		64E21BA92A25460A009FE150 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		64E21BAE2A27EDDE009FE150 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +142,7 @@
 				64E21BA92A25460A009FE150 /* SplashViewController.swift */,
 				64E21BA72A24B37C009FE150 /* OAuth2TokenStorage.swift */,
 				64E21BA52A24A23C009FE150 /* OAuth2Service.swift */,
+				64E21BAE2A27EDDE009FE150 /* UIBlockingProgressHUD.swift */,
 				64E21BA32A1EC441009FE150 /* WebViewViewController.swift */,
 			);
 			path = Auth;
@@ -245,6 +248,7 @@
 				648750EB29D1C55700DCB64A /* ImagesListCell.swift in Sources */,
 				648750E929D0EBB200DCB64A /* UIColor+Extensions.swift in Sources */,
 				64C30CDE2A1CD82800D106AF /* Constants.swift in Sources */,
+				64E21BAF2A27EDDE009FE150 /* UIBlockingProgressHUD.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
