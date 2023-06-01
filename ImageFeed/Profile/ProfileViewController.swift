@@ -9,14 +9,24 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    private var profileService = ProfileService.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-              
+           
+
+        
         let profileImage = profileImage()
         let userName = userName()
         let nikname = nikname()
         let profileDescription = profileDescription()
         let logoutButton = logoutButton()
+        
+        if let profile = profileService.profile {
+            userName.text = profile.name
+            nikname.text = profile.loginName
+            profileDescription.text = profile.bio
+        }
         
         NSLayoutConstraint.activate([
             profileImage.heightAnchor.constraint(equalToConstant: 70),
@@ -85,6 +95,4 @@ final class ProfileViewController: UIViewController {
         
         return logoutButton
     }
-
-
 }

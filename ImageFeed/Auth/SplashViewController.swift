@@ -9,6 +9,8 @@ import UIKit
 
 class SplashViewController: UIViewController {
     
+    private var profileService = ProfileService.shared
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -16,7 +18,8 @@ class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let _ = OAuth2TokenStorage().token {
+        if let token = OAuth2TokenStorage().token {
+            self.profileService.fetchProfile(token)
             switchToTabBarController()
         } else {
             performSegue(withIdentifier: "AuthViewSegue", sender: nil)
@@ -51,6 +54,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             switch result {
             case .success(let accessToken):
                 OAuth2TokenStorage().token = accessToken
+                self.profileService.fetchProfile(accessToken)
                 UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController()
             case .failure(let error):
