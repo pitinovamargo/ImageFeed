@@ -10,6 +10,7 @@ import UIKit
 class SplashViewController: UIViewController {
     
     private var profileService = ProfileService.shared
+    private var profileImageService = ProfileImageService.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,9 +18,10 @@ class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         if let token = OAuth2TokenStorage().token {
             self.profileService.fetchProfile(token)
+            ProfileImageService.shared.fetchProfileImageURL(username: profileService.profile?.username ?? "") { _ in }
             switchToTabBarController()
         } else {
             performSegue(withIdentifier: "AuthViewSegue", sender: nil)
