@@ -9,9 +9,10 @@ import Foundation
 
 final class ProfileImageService {
     
+    static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     static let shared = ProfileImageService()
     private (set) var avatarURL: String?
-        
+    
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         let url = URL(string: "https://api.unsplash.com/users/\(username)?client_id=\(accessKey)")!
         
@@ -35,6 +36,11 @@ final class ProfileImageService {
                 self.avatarURL = userResult.profileImage.small.absoluteString
                 
                 completion(.success(self.avatarURL!))
+                NotificationCenter.default
+                    .post(
+                        name: ProfileImageService.didChangeNotification,
+                        object: self,
+                        userInfo: ["URL": userResult.profileImage.small.absoluteString])
             } catch {
                 completion(.failure(error))
             }

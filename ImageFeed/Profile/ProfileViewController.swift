@@ -10,11 +10,10 @@ import UIKit
 final class ProfileViewController: UIViewController {
     
     private var profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-           
-
         
         let profileImage = profileImage()
         let userName = userName()
@@ -27,6 +26,17 @@ final class ProfileViewController: UIViewController {
             nikname.text = profile.loginName
             profileDescription.text = profile.bio
         }
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        updateAvatar()
         
         NSLayoutConstraint.activate([
             profileImage.heightAnchor.constraint(equalToConstant: 70),
@@ -44,6 +54,15 @@ final class ProfileViewController: UIViewController {
             logoutButton.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor),
             logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
         ])
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        print("GOT URL: \(url)")
+        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
     }
     
     func profileImage() -> UIImageView {
