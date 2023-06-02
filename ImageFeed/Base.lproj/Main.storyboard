@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qsZ-gv-Peb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xfA-il-sxn">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -14,6 +15,112 @@
         </array>
     </customFonts>
     <scenes>
+        <!--AuthViewController-->
+        <scene sceneID="akq-OV-07K">
+            <objects>
+                <viewController id="e0o-Fo-TK8" userLabel="AuthViewController" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Sje-QP-QOf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo_of_Unsplash" translatesAutoresizingMaskIntoConstraints="NO" id="lCU-SM-tIG" userLabel="auth_screen_logo">
+                                <rect key="frame" x="177" y="425" width="60" height="60"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HeT-VC-XxO" userLabel="Enter Button">
+                                <rect key="frame" x="16" y="689" width="382" height="48"/>
+                                <color key="backgroundColor" name="YP White"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="imk-UQ-N3I"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Войти">
+                                    <color key="titleColor" name="YP Black"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="16"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="eRp-dS-wQq" kind="presentation" identifier="ShowWebView" modalPresentationStyle="overFullScreen" id="BUr-1x-WSl"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="oua-pp-7Ze"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="lCU-SM-tIG" firstAttribute="centerX" secondItem="Sje-QP-QOf" secondAttribute="centerX" id="4EH-rK-bNe"/>
+                            <constraint firstItem="lCU-SM-tIG" firstAttribute="centerY" secondItem="Sje-QP-QOf" secondAttribute="centerY" constant="7" id="7Ka-Tf-LFl"/>
+                            <constraint firstItem="lCU-SM-tIG" firstAttribute="bottom" secondItem="HeT-VC-XxO" secondAttribute="top" constant="-204" id="bic-Vi-6HC"/>
+                            <constraint firstItem="HeT-VC-XxO" firstAttribute="leading" secondItem="oua-pp-7Ze" secondAttribute="leading" constant="16" id="iaD-Gv-tVx"/>
+                            <constraint firstItem="oua-pp-7Ze" firstAttribute="trailing" secondItem="HeT-VC-XxO" secondAttribute="trailing" constant="16" id="qmQ-y7-Kyn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="8LR-Am-MRh"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tT0-j5-Qt4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-214" y="-721"/>
+        </scene>
+        <!--Web View View Controller-->
+        <scene sceneID="G2J-XN-Dx1">
+            <objects>
+                <viewController id="eRp-dS-wQq" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uhO-O5-7SK">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmd-xH-2I0">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" name="YP White"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wjb-er-0Eb" userLabel="nav_back_button">
+                                <rect key="frame" x="8" y="56" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="0OL-Dd-HMC"/>
+                                    <constraint firstAttribute="height" constant="48" id="Ysb-HO-9nc"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="nav_back_button_black"/>
+                                <connections>
+                                    <action selector="didTapBackButton:" destination="eRp-dS-wQq" eventType="touchUpInside" id="32y-yq-aHT"/>
+                                    <action selector="didTapBackButton:" destination="IH6-k2-hxh" eventType="touchUpInside" id="szt-5R-dFA"/>
+                                </connections>
+                            </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ykt-wv-0Gs">
+                                <rect key="frame" x="0.0" y="104" width="414" height="4"/>
+                                <color key="progressTintColor" name="YP Black"/>
+                            </progressView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vLa-p8-efR"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Wjb-er-0Eb" firstAttribute="leading" secondItem="vLa-p8-efR" secondAttribute="leading" constant="8" id="7Sb-fX-cwZ"/>
+                            <constraint firstAttribute="bottom" secondItem="kmd-xH-2I0" secondAttribute="bottom" id="80f-IG-AEL"/>
+                            <constraint firstAttribute="trailing" secondItem="ykt-wv-0Gs" secondAttribute="trailing" id="8hO-gf-lkN"/>
+                            <constraint firstItem="ykt-wv-0Gs" firstAttribute="top" secondItem="Wjb-er-0Eb" secondAttribute="bottom" id="BO7-5Q-PQq"/>
+                            <constraint firstAttribute="trailing" secondItem="kmd-xH-2I0" secondAttribute="trailing" id="Nz3-PL-jPw"/>
+                            <constraint firstItem="kmd-xH-2I0" firstAttribute="leading" secondItem="uhO-O5-7SK" secondAttribute="leading" id="Rv0-Wy-5jT"/>
+                            <constraint firstItem="Wjb-er-0Eb" firstAttribute="top" secondItem="vLa-p8-efR" secondAttribute="top" constant="8" id="Was-NS-ciI"/>
+                            <constraint firstItem="kmd-xH-2I0" firstAttribute="top" secondItem="uhO-O5-7SK" secondAttribute="top" id="Zy5-2H-4zz"/>
+                            <constraint firstItem="ykt-wv-0Gs" firstAttribute="leading" secondItem="uhO-O5-7SK" secondAttribute="leading" id="xtv-x0-30q"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="progressView" destination="ykt-wv-0Gs" id="Xvv-hT-uE6"/>
+                        <outlet property="webView" destination="kmd-xH-2I0" id="eUG-Q6-n7i"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wvi-tK-KxJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="708" y="-714"/>
+        </scene>
         <!--ImagesList-->
         <scene sceneID="tne-QT-ifu">
             <objects>
@@ -127,14 +234,14 @@
                                     <outlet property="delegate" destination="IH6-k2-hxh" id="uzy-3S-X6C"/>
                                 </connections>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RA-8Z-BEf">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6RA-8Z-BEf" userLabel="nav_back_button">
                                 <rect key="frame" x="8" y="56" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="9be-aT-UQm"/>
                                     <constraint firstAttribute="height" constant="48" id="bWe-yl-Hz4"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="Backward"/>
+                                <state key="normal" image="nav_back_button"/>
                                 <connections>
                                     <action selector="didTapBackButton:" destination="IH6-k2-hxh" eventType="touchUpInside" id="7eW-CR-twY"/>
                                 </connections>
@@ -169,7 +276,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="srm-56-knE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="845" y="-3"/>
+            <point key="canvasLocation" x="809" y="-3"/>
         </scene>
         <!--Profile-->
         <scene sceneID="jwK-CU-iBl">
@@ -190,7 +297,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="oGy-3x-wrb">
             <objects>
-                <tabBarController id="qsZ-gv-Peb" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarViewController" id="qsZ-gv-Peb" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="u4N-qe-uD2">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -209,12 +316,61 @@
             </objects>
             <point key="canvasLocation" x="-1123" y="350"/>
         </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="4Wv-3E-yNF">
+            <objects>
+                <viewController id="xfA-il-sxn" userLabel="Splash View Controller" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="G55-bh-tQA">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="start_logo" translatesAutoresizingMaskIntoConstraints="NO" id="gz0-2F-x4V">
+                                <rect key="frame" x="170" y="409" width="75" height="78"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="58c-V4-GxL"/>
+                        <color key="backgroundColor" name="YP Black"/>
+                        <constraints>
+                            <constraint firstItem="gz0-2F-x4V" firstAttribute="centerY" secondItem="58c-V4-GxL" secondAttribute="centerY" id="E14-tp-wgP"/>
+                            <constraint firstItem="gz0-2F-x4V" firstAttribute="centerX" secondItem="58c-V4-GxL" secondAttribute="centerX" id="z9z-je-Vli"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="Fbg-tC-BTq" kind="presentation" identifier="AuthViewSegue" modalPresentationStyle="fullScreen" id="phR-vT-MJh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cwa-FB-Wiu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2290" y="-191"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="sP8-h2-YHh">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Fbg-tC-BTq" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="nED-tw-hPI"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ymt-UP-coI">
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="e0o-Fo-TK8" kind="relationship" relationship="rootViewController" id="hiS-6O-o4y"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y4j-3I-Ea2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1123" y="-721"/>
+        </scene>
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="Backward" width="24" height="24"/>
+        <image name="Logo_of_Unsplash" width="60" height="60"/>
         <image name="Red Like" width="42" height="42"/>
         <image name="Sharing_button" width="50" height="50"/>
+        <image name="nav_back_button" width="24" height="24"/>
+        <image name="nav_back_button_black" width="24" height="24"/>
+        <image name="start_logo" width="75" height="78"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Black">
@@ -223,5 +379,8 @@
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
