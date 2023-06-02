@@ -22,7 +22,7 @@ final class ProfileViewController: UIViewController {
         let profileDescription = profileDescription()
         let logoutButton = logoutButton()
         
-        if let profile = profileService.profile {
+        if let profile = profileService.getProfile() {
             userName.text = profile.name
             nikname.text = profile.loginName
             profileDescription.text = profile.bio

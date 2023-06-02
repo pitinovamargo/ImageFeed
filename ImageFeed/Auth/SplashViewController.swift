@@ -21,7 +21,7 @@ class SplashViewController: UIViewController {
 
         if let token = OAuth2TokenStorage().token {
             self.profileService.fetchProfile(token)
-            ProfileImageService.shared.fetchProfileImageURL(username: profileService.profile?.username ?? "") { _ in }
+            self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { _ in }
             switchToTabBarController()
         } else {
             performSegue(withIdentifier: "AuthViewSegue", sender: nil)

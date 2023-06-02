@@ -10,20 +10,33 @@ import Foundation
 final class ProfileService {
     static let shared = ProfileService()
     
-    private (set) var profile: Profile?
+    private var profile: Profile?
     
     private var lastToken: String?
     private let lock = NSLock()
+    private let semaphore = DispatchSemaphore(value: 0)
     
     func fetchProfile(_ token: String) {
         self.fetchProfile(token) { result in
             switch result {
             case .success(let profile):
                 self.profile = profile
+                self.lock.unlock()
+                self.semaphore.signal()
             case .failure(let error):
+                self.lastToken = nil
+                self.lock.unlock()
+                self.semaphore.signal()
                 fatalError("ERROR: \(error)")
             }
         }
+    }
+    
+    func getProfile() -> Profile? {
+        if self.profile == nil {
+            self.semaphore.wait()
+        }
+        return self.profile
     }
     
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
@@ -40,15 +53,11 @@ final class ProfileService {
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
-                self.lastToken = nil
-                self.lock.unlock()
                 return
             }
             
             guard let data = data else {
                 completion(.failure(NSError(domain: "", code: 0, userInfo: nil)))
-                self.lastToken = nil
-                self.lock.unlock()
                 return
             }
             
@@ -56,11 +65,8 @@ final class ProfileService {
                 let profileResult = try JSONDecoder().decode(ProfileResult.self, from: data)
                 let profile = Profile(username: profileResult.username, name: "\(profileResult.firstName) \(profileResult.lastName)", loginName: "@\(profileResult.username)", bio: profileResult.bio ?? "")
                 completion(.success(profile))
-                self.lock.unlock()
             } catch {
                 completion(.failure(error))
-                self.lastToken = nil
-                self.lock.unlock()
             }
         }
         
