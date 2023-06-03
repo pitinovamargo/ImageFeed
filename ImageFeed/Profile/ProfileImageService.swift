@@ -19,20 +19,9 @@ final class ProfileImageService {
         var request = URLRequest(url: url)
         request.setValue("Bearer \(OAuth2TokenStorage().token ?? "")", forHTTPHeaderField: "Authorization")
         
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = data else {
-                completion(.failure(ProfileImageError.noData))
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let userResult = try decoder.decode(UserResult.self, from: data)
+        let task = URLSession.shared.objectTask(for: request) { (result: Result<UserResult, Error>) in
+            switch result {
+            case .success(let userResult):
                 self.avatarURL = userResult.profileImage.small.absoluteString
                 
                 completion(.success(self.avatarURL!))
@@ -41,11 +30,10 @@ final class ProfileImageService {
                         name: ProfileImageService.didChangeNotification,
                         object: self,
                         userInfo: ["URL": userResult.profileImage.small.absoluteString])
-            } catch {
+            case .failure(let error):
                 completion(.failure(error))
             }
         }
-        
         task.resume()
     }
 }

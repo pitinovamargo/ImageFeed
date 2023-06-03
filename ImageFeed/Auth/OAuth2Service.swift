@@ -22,12 +22,20 @@ class OAuth2Service {
         lastCode = code
         
         let request = makeRequest(code)
-        callUnsplash(request: request) { (result: Result<Data, Error>)  in
-            let parsed = result.flatMap { data -> Result<String, Error> in
-                Result{ try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data).accessToken }
+        let task = URLSession.shared.objectTask(for: request) { (result: Result<OAuthTokenResponseBody, Error>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    completion(.success(response.accessToken))
+                case .failure(let error):
+                    completion(.failure(error))
+                    self.lastCode = nil
+                }
+                self.currentTask = nil
             }
-            completion(parsed)
         }
+        currentTask = task
+        task.resume()
     }
     
     private func makeRequest(_ code: String) -> URLRequest {
@@ -45,33 +53,6 @@ class OAuth2Service {
         
         return request
     }
-    
-    private func callUnsplash(
-        request: URLRequest,
-        responseHandler: @escaping (Result<Data, Error>) -> Void
-    ) {
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            DispatchQueue.main.async {
-                if let data = data {
-                    responseHandler(.success(data))
-                }
-                self.currentTask = nil
-                if let error = error {
-                    responseHandler(.failure(NetworkError.urlRequestError(error)))
-                    self.lastCode = nil
-                }
-                if let responseCode = (response as? HTTPURLResponse)?.statusCode {
-                    if 200..<300 ~= responseCode {
-                    } else {
-                        responseHandler(.failure(NetworkError.httpStatusCode(responseCode)))
-                        self.lastCode = nil
-                    }
-                }
-            }
-        }
-        self.currentTask = task
-        task.resume()
-    }
 }
 
 struct OAuthTokenResponseBody: Decodable {
@@ -86,9 +67,4 @@ struct OAuthTokenResponseBody: Decodable {
         case scope
         case createdAt = "created_at"
     }
-}
-
-enum NetworkError: Error {
-    case httpStatusCode(Int)
-    case urlRequestError(Error)
 }
