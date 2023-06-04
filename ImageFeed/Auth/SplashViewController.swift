@@ -11,14 +11,16 @@ class SplashViewController: UIViewController {
     
     private var profileService = ProfileService.shared
     private var profileImageService = ProfileImageService.shared
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        self.profileService.delegate = self
+        self.profileImageService.delegate = self
+        
         if let token = OAuth2TokenStorage().token {
             self.profileService.fetchProfile(token)
             self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { _ in }
@@ -57,15 +59,29 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success(let accessToken):
                 OAuth2TokenStorage().token = accessToken
                 self.profileService.fetchProfile(accessToken)
+                self.profileImageService.fetchProfileImageURL(username: self.profileService.getProfile()?.username ?? "") { _ in }
                 UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController()
             case .failure(let error):
                 print("Failed: \(error)")
                 UIBlockingProgressHUD.dismiss()
+                self.showAlert()
                 break
             }
         }
     }
-    
-    
+}
+
+extension SplashViewController {
+    func showAlert() {
+        let alert = UIAlertController(
+            title: "Alert title",
+            message: "Alert message",
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "OK", style: .default, handler: { _ in })
+        
+        alert.addAction(action)
+        self.present(alert, animated: true)
+    }
 }

@@ -13,6 +13,8 @@ final class ProfileService {
     
     private var profile: Profile?
     
+    var delegate: SplashViewController?
+    
     private var lastToken: String?
     private let lock = NSLock()
     private let semaphore = DispatchSemaphore(value: 0)
@@ -28,7 +30,9 @@ final class ProfileService {
                 self.lastToken = nil
                 self.lock.unlock()
                 self.semaphore.signal()
-                fatalError("ERROR: \(error)")
+                DispatchQueue.main.async {
+                    self.delegate?.showAlert()
+                }
             }
         }
     }

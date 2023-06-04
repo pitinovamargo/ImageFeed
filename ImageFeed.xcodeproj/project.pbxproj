@@ -30,6 +30,7 @@
 		64FB9CCE2A28BC960009638A /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64FB9CCD2A28BC960009638A /* ProfileService.swift */; };
 		64FB9CD02A29FCA80009638A /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64FB9CCF2A29FCA80009638A /* ProfileImageService.swift */; };
 		64FB9CD22A2BEAC40009638A /* URLSessionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64FB9CD12A2BEAC40009638A /* URLSessionExtension.swift */; };
+		64FB9CD42A2BFA880009638A /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64FB9CD32A2BFA880009638A /* AlertPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		64FB9CCD2A28BC960009638A /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		64FB9CCF2A29FCA80009638A /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		64FB9CD12A2BEAC40009638A /* URLSessionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionExtension.swift; sourceTree = "<group>"; };
+		64FB9CD32A2BFA880009638A /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 			children = (
 				643E51C529D1CF8000A44133 /* Main.storyboard */,
 				64FB9CD12A2BEAC40009638A /* URLSessionExtension.swift */,
+				64FB9CD32A2BFA880009638A /* AlertPresenter.swift */,
 				64C30CDD2A1CD82800D106AF /* Constants.swift */,
 				64C30CE12A1EB98500D106AF /* Auth */,
 				648750EC29D1C59800DCB64A /* ImagesList */,
@@ -249,6 +252,7 @@
 				6416925429E8AB8100225424 /* ProfileViewController.swift in Sources */,
 				64E21BA22A1EC3E0009FE150 /* AuthViewController.swift in Sources */,
 				643E51CE29D1CF8000A44133 /* AppDelegate.swift in Sources */,
+				64FB9CD42A2BFA880009638A /* AlertPresenter.swift in Sources */,
 				64E21BA62A24A23C009FE150 /* OAuth2Service.swift in Sources */,
 				64FB9CD22A2BEAC40009638A /* URLSessionExtension.swift in Sources */,
 				64E21BAA2A25460A009FE150 /* SplashViewController.swift in Sources */,

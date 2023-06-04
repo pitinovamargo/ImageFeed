@@ -11,6 +11,9 @@ final class ProfileImageService {
     
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     static let shared = ProfileImageService()
+    
+    var delegate: SplashViewController?
+
     private (set) var avatarURL: String?
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
@@ -32,6 +35,9 @@ final class ProfileImageService {
                         userInfo: ["URL": userResult.profileImage.small.absoluteString])
             case .failure(let error):
                 completion(.failure(error))
+                DispatchQueue.main.async {
+                    self.delegate?.showAlert()
+                }
             }
         }
         task.resume()
