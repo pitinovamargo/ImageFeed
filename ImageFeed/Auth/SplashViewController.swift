@@ -11,20 +11,28 @@ class SplashViewController: UIViewController {
     
     private var profileService = ProfileService.shared
     private var profileImageService = ProfileImageService.shared
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.profileService.delegate = self
-        self.profileImageService.delegate = self
         
         if let token = OAuth2TokenStorage().token {
             self.profileService.fetchProfile(token)
-            self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { _ in }
-            switchToTabBarController()
+            self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { result in
+                switch result {
+                case .failure(_):
+                    DispatchQueue.main.async {
+                        self.showAlert()
+                    }
+                case .success(_):
+                    DispatchQueue.main.async {
+                        self.switchToTabBarController()
+                    }
+                }
+            }
         } else {
             performSegue(withIdentifier: "AuthViewSegue", sender: nil)
         }
@@ -59,13 +67,25 @@ extension SplashViewController: AuthViewControllerDelegate {
             case .success(let accessToken):
                 OAuth2TokenStorage().token = accessToken
                 self.profileService.fetchProfile(accessToken)
-                self.profileImageService.fetchProfileImageURL(username: self.profileService.getProfile()?.username ?? "") { _ in }
-                UIBlockingProgressHUD.dismiss()
-                self.switchToTabBarController()
+                self.profileImageService.fetchProfileImageURL(username: self.profileService.getProfile()?.username ?? "") { result in
+                    switch result {
+                    case .failure(_):
+                        DispatchQueue.main.async {
+                            self.showAlert()
+                        }
+                    case .success(_):
+                        DispatchQueue.main.async {
+                            UIBlockingProgressHUD.dismiss()
+                            self.switchToTabBarController()
+                        }
+                    }
+                }
             case .failure(let error):
                 print("Failed: \(error)")
                 UIBlockingProgressHUD.dismiss()
-                self.showAlert()
+                DispatchQueue.main.async {
+                    self.showAlert()
+                }
                 break
             }
         }
@@ -75,11 +95,11 @@ extension SplashViewController: AuthViewControllerDelegate {
 extension SplashViewController {
     func showAlert() {
         let alert = UIAlertController(
-            title: "Alert title",
-            message: "Alert message",
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
             preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "OK", style: .default, handler: { _ in })
+        let action = UIAlertAction(title: "Ok", style: .default, handler: { _ in })
         
         alert.addAction(action)
         self.present(alert, animated: true)
