@@ -24,7 +24,7 @@ final class ProfileService {
                 self.profile = profile
                 self.lock.unlock()
                 self.semaphore.signal()
-            case .failure(let error):
+            case .failure(_ ):
                 self.lastToken = nil
                 self.lock.unlock()
                 self.semaphore.signal()

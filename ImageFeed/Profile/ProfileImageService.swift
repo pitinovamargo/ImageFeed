@@ -5,34 +5,47 @@
 //  Created by Margarita Pitinova on 02.06.2023.
 //
 
-import Foundation
+import UIKit
+import Kingfisher
 
 final class ProfileImageService {
     
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
     static let shared = ProfileImageService()
     
-    private (set) var avatarURL: String?
+    private (set) var avatar: UIImageView = UIImageView()
     
     func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
         let url = URL(string: "https://api.unsplash.com/users/\(username)?client_id=\(accessKey)")!
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(OAuth2TokenStorage().token ?? "")", forHTTPHeaderField: "Authorization")
-        
+
         let task = URLSession.shared.objectTask(for: request) { (result: Result<UserResult, Error>) in
-            switch result {
-            case .success(let userResult):
-                self.avatarURL = userResult.profileImage.small.absoluteString
-                
-                completion(.success(self.avatarURL!))
-                NotificationCenter.default
-                    .post(
-                        name: ProfileImageService.didChangeNotification,
-                        object: self,
-                        userInfo: ["URL": userResult.profileImage.small.absoluteString])
-            case .failure(let error):
-                completion(.failure(error))
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let userResult):
+                    let avatarURLPath = userResult.profileImage.large.absoluteString
+                    let avatarURL = URL(string: avatarURLPath)!
+                    self.avatar.kf.indicatorType = .activity
+                    self.avatar.kf.setImage(with: avatarURL,
+                                            placeholder: UIImage(named: "placeholder"),
+                                            options: [.processor(RoundCornerImageProcessor(radius: Radius.heightFraction(0.5)))]) { result in
+                        switch result {
+                        case .success(_):
+                            NotificationCenter.default
+                                .post(
+                                    name: ProfileImageService.didChangeNotification,
+                                    object: self,
+                                    userInfo: ["URL": userResult.profileImage.small.absoluteString])
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                    completion(.success(avatarURLPath))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
         }
         task.resume()
@@ -45,9 +58,13 @@ struct UserResult: Codable {
     
     struct ProfileImage: Codable {
         let small: URL
+        let medium: URL
+        let large: URL
         
         enum CodingKeys: String, CodingKey {
             case small
+            case medium
+            case large
         }
     }
     

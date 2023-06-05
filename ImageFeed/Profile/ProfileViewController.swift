@@ -34,9 +34,9 @@ final class ProfileViewController: UIViewController {
                 queue: .main
             ) { [weak self] _ in
                 guard let self = self else { return }
-                self.updateAvatar()
+                self.updateAvatar(profileImage)
             }
-        updateAvatar()
+        updateAvatar(profileImage)
         
         NSLayoutConstraint.activate([
             profileImage.heightAnchor.constraint(equalToConstant: 70),
@@ -56,17 +56,13 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
-        print("GOT URL: \(url)")
-        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+    private func updateAvatar(_ profileImage: UIImageView) {
+        print("UPDATING AVATAR")
+        profileImage.image = ProfileImageService.shared.avatar.image
     }
     
     func profileImage() -> UIImageView {
-        let profileImage = UIImageView(image: UIImage(named: "ProfilePhoto"))
+        let profileImage = UIImageView(image: UIImage(named: "placeholder"))
         view.addSubview(profileImage)
         profileImage.translatesAutoresizingMaskIntoConstraints = false
         
