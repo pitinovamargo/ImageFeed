@@ -11,13 +11,19 @@ class SplashViewController: UIViewController {
     
     private var profileService = ProfileService.shared
     private var profileImageService = ProfileImageService.shared
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        let splashScreenLogo = splashScreenLogo()
+        NSLayoutConstraint.activate([
+            splashScreenLogo.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            splashScreenLogo.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
         
         if let token = OAuth2TokenStorage().token {
             self.profileService.fetchProfile(token)
@@ -34,19 +40,11 @@ class SplashViewController: UIViewController {
                 }
             }
         } else {
-            performSegue(withIdentifier: "AuthViewSegue", sender: nil)
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "AuthViewSegue" {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Can not find AuthViewController") }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
+            print("MOVING TO AUTH VIEW")
+            let authViewController = AuthViewController()
+            authViewController.delegate = self
+            authViewController.modalPresentationStyle = .fullScreen
+            present(authViewController, animated: true)
         }
     }
     
@@ -103,5 +101,13 @@ extension SplashViewController {
         
         alert.addAction(action)
         self.present(alert, animated: true)
+    }
+    
+    func splashScreenLogo() -> UIImageView {
+        let splashScreenLogo = UIImageView(image: UIImage(named: "Logo_of_Unsplash"))
+        view.addSubview(splashScreenLogo)
+        splashScreenLogo.translatesAutoresizingMaskIntoConstraints = false
+        
+        return splashScreenLogo
     }
 }
