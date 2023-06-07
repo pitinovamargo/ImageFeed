@@ -20,7 +20,7 @@ final class ProfileImageService {
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(OAuth2TokenStorage().token ?? "")", forHTTPHeaderField: "Authorization")
-
+        
         let task = URLSession.shared.objectTask(for: request) { (result: Result<UserResult, Error>) in
             DispatchQueue.main.async {
                 switch result {
@@ -30,18 +30,20 @@ final class ProfileImageService {
                     self.avatar.kf.indicatorType = .activity
                     self.avatar.kf.setImage(with: avatarURL,
                                             placeholder: UIImage(named: "placeholder"),
-                                            options: [.processor(RoundCornerImageProcessor(radius: Radius.heightFraction(0.5)))]) { result in
-                        switch result {
-                        case .success(_):
-                            NotificationCenter.default
-                                .post(
-                                    name: ProfileImageService.didChangeNotification,
-                                    object: self,
-                                    userInfo: ["URL": userResult.profileImage.small.absoluteString])
-                        case .failure(let error):
-                            print(error)
-                        }
-                    }
+                                            options: [.processor(RoundCornerImageProcessor(radius: Radius.heightFraction(0.5))),
+                                                      .scaleFactor(UIScreen.main.scale),
+                                                      .cacheOriginalImage]) { result in
+                                                          switch result {
+                                                          case .success(_):
+                                                              NotificationCenter.default
+                                                                  .post(
+                                                                    name: ProfileImageService.didChangeNotification,
+                                                                    object: self,
+                                                                    userInfo: ["URL": userResult.profileImage.large.absoluteString])
+                                                          case .failure(let error):
+                                                              print(error)
+                                                          }
+                                                      }
                     completion(.success(avatarURLPath))
                 case .failure(let error):
                     completion(.failure(error))

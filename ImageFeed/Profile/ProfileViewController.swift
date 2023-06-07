@@ -57,12 +57,13 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateAvatar(_ profileImage: UIImageView) {
-        print("UPDATING AVATAR")
         profileImage.image = ProfileImageService.shared.avatar.image
     }
     
     func profileImage() -> UIImageView {
         let profileImage = UIImageView(image: UIImage(named: "placeholder"))
+        profileImage.layer.cornerRadius = profileImage.frame.size.width / 2
+        profileImage.clipsToBounds = true
         view.addSubview(profileImage)
         profileImage.translatesAutoresizingMaskIntoConstraints = false
         

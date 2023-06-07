@@ -40,8 +40,8 @@ class SplashViewController: UIViewController {
                 }
             }
         } else {
-            print("MOVING TO AUTH VIEW")
-            let authViewController = AuthViewController()
+            guard let authViewController = UIStoryboard(name: "Main", bundle: .main)
+                .instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else { fatalError("Invalid Configuration") }
             authViewController.delegate = self
             authViewController.modalPresentationStyle = .fullScreen
             present(authViewController, animated: true)
