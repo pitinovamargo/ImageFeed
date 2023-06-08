@@ -53,7 +53,7 @@ final class ProfileService {
         let task = URLSession.shared.objectTask(for: request) { (result: Result<ProfileResult, Error>) in
             switch result {
             case .success(let profileResult):
-                let profile = Profile(username: profileResult.username, name: "\(profileResult.firstName) \(profileResult.lastName)", loginName: "@\(profileResult.username)", bio: profileResult.bio ?? "")
+                let profile = Profile(username: profileResult.username, name: "\(profileResult.firstName) \(profileResult.lastName ?? "")", loginName: "@\(profileResult.username)", bio: profileResult.bio ?? "")
                 completion(.success(profile))
             case .failure(let error):
                 completion(.failure(error))
@@ -66,7 +66,7 @@ final class ProfileService {
 struct ProfileResult: Codable {
     let username: String
     let firstName: String
-    let lastName: String
+    let lastName: String?
     let bio: String?
     
     enum CodingKeys: String, CodingKey {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftKeychainWrapper
 
 class SplashViewController: UIViewController {
     
@@ -26,6 +27,7 @@ class SplashViewController: UIViewController {
         ])
         
         if let token = OAuth2TokenStorage().token {
+            KeychainWrapper.standard.removeAllKeys()
             self.profileService.fetchProfile(token)
             self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { result in
                 switch result {
@@ -69,6 +71,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                     switch result {
                     case .failure(_):
                         DispatchQueue.main.async {
+                            self.dismissAuthViewController()
                             self.showAlert()
                         }
                     case .success(_):
@@ -85,6 +88,16 @@ extension SplashViewController: AuthViewControllerDelegate {
                     self.showAlert()
                 }
                 break
+            }
+        }
+    }
+    
+    private func dismissAuthViewController() {
+        if let authViewController = self.presentedViewController as? AuthViewController {
+            authViewController.dismiss(animated: false) {
+                if let webViewController = authViewController.presentedViewController as? WebViewViewController {
+                    webViewController.dismiss(animated: false)
+                }
             }
         }
     }
