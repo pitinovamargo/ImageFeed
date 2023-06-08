@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftKeychainWrapper
 
 class SplashViewController: UIViewController {
     
@@ -27,7 +26,6 @@ class SplashViewController: UIViewController {
         ])
         
         if let token = OAuth2TokenStorage().token {
-            KeychainWrapper.standard.removeAllKeys()
             self.profileService.fetchProfile(token)
             self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { result in
                 switch result {
