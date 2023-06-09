@@ -13,6 +13,7 @@ class ImagesListViewController: UIViewController {
     @IBOutlet weak private var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
+    let imagesListService = ImagesListService()
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -55,8 +56,19 @@ class ImagesListViewController: UIViewController {
         }
         
     }
+    
+    func tableView( // тут мы будем вызывать функцию загрузки страницы с фото fetchPhotosNextPage()
+      _ tableView: UITableView,
+      willDisplay cell: UITableViewCell,
+      forRowAt indexPath: IndexPath
+    ) {
+        if indexPath.row + 1 == imagesListService.photos.count {
+            imagesListService.fetchPhotosNextPage()
+        } else {
+            return
+        }
+    }
 }
-
 
 extension ImagesListViewController: UITableViewDelegate {
     
