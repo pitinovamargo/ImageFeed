@@ -18,7 +18,7 @@ class SplashViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //SOME COMMENT
+        
         let splashScreenLogo = splashScreenLogo()
         NSLayoutConstraint.activate([
             splashScreenLogo.centerYAnchor.constraint(equalTo: view.centerYAnchor),
