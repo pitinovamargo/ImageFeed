@@ -61,40 +61,28 @@ extension SplashViewController: AuthViewControllerDelegate {
     func acceptToken(code: String) {
         UIBlockingProgressHUD.show()
         OAuth2Service().fetchAuthToken(code) { result in
-            switch result {
-            case .success(let accessToken):
-                OAuth2TokenStorage().token = accessToken
-                self.profileService.fetchProfile(accessToken)
-                self.profileImageService.fetchProfileImageURL(username: self.profileService.getProfile()?.username ?? "") { result in
-                    switch result {
-                    case .failure(_):
-                        DispatchQueue.main.async {
-                            self.dismissAuthViewController()
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let accessToken):
+                    OAuth2TokenStorage().token = accessToken
+                    self.profileService.fetchProfile(accessToken)
+                    self.profileImageService.fetchProfileImageURL(username: self.profileService.getProfile()?.username ?? "") { result in
+                        switch result {
+                        case .failure(_):
+                            UIBlockingProgressHUD.dismiss()
+                            self.dismiss(animated: false)
                             self.showAlert()
-                        }
-                    case .success(_):
-                        DispatchQueue.main.async {
+                        case .success(_):
                             UIBlockingProgressHUD.dismiss()
                             self.switchToTabBarController()
                         }
                     }
-                }
-            case .failure(let error):
-                print("Failed: \(error)")
-                UIBlockingProgressHUD.dismiss()
-                DispatchQueue.main.async {
+                case .failure(let error):
+                    print("Failed: \(error)")
+                    UIBlockingProgressHUD.dismiss()
+                    self.dismiss(animated: false)
                     self.showAlert()
-                }
-                break
-            }
-        }
-    }
-    
-    private func dismissAuthViewController() {
-        if let authViewController = self.presentedViewController as? AuthViewController {
-            authViewController.dismiss(animated: false) {
-                if let webViewController = authViewController.presentedViewController as? WebViewViewController {
-                    webViewController.dismiss(animated: false)
+                    break
                 }
             }
         }
