@@ -19,8 +19,7 @@ class ImagesListViewController: UIViewController {
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
+        formatter.dateFormat = "dd MMMM yyyy"
         return formatter
     }()
     
@@ -127,6 +126,7 @@ extension ImagesListViewController: UITableViewDataSource {
                                               options: []) { result in
                        switch result {
                        case .success(_):
+                           cell.dateLabel.text = self.dateFormatter.string(from: photo.createdAt ?? Date())
                            tableView.reloadRows(at: [indexPath], with: .automatic)
                        case .failure(let error):
                            print(error)
