@@ -19,20 +19,19 @@ final class ImagesListService {
     private var isFetching = false
     private var currentPage = 1
     private let itemsPerPage = 10
-    // ...
     
     func fetchPhotosNextPage() { // тут получаем очередную страницу, скачивать больше одной страницы за раз не будем; если идёт закачка — будем отправлять новый запрос только после её завершения.
         guard !isFetching else { return }
         isFetching = true
-        
-        // Simulating network request delay
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            guard let url = URL(string: "https://api.unsplash.com/photos?page=\(self.currentPage)&per_page=\(self.itemsPerPage)") else {
+            guard let url = URL(string: "https://api.unsplash.com/photos?page=\(self.currentPage)&per_page=\(self.itemsPerPage)"),
+            let token = OAuth2TokenStorage().token else {
                 self.isFetching = false
                 return
             }
-            
-            let task = URLSession.shared.dataTask(with: url) { [weak self] (data, response, error) in
+            var request = URLRequest(url: url)
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
                 guard let self = self, let data = data else {
                     self?.isFetching = false
                     return
@@ -67,9 +66,9 @@ final class ImagesListService {
         }
     }
     private func dateFromString(_ dateString: String) -> Date? {
-            let dateFormatter = ISO8601DateFormatter()
-            return dateFormatter.date(from: dateString)
-        }
+        let dateFormatter = ISO8601DateFormatter()
+        return dateFormatter.date(from: dateString)
+    }
 }
 
 struct Photo { // инфа о полученных фото для описания отдельного экземпляра фотографии
@@ -102,5 +101,4 @@ struct PhotoResult: Codable {
     let liked_by_user: Bool
     let description: String?
     let urls: UrlsResult
-    // Other properties if needed
 }

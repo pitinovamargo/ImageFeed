@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ImagesListViewController: UIViewController {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
@@ -13,7 +14,8 @@ class ImagesListViewController: UIViewController {
     @IBOutlet weak private var tableView: UITableView!
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    let imagesListService = ImagesListService()
+    private let imagesListService = ImagesListService()
+    private var photos: [Photo] = []
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -26,6 +28,9 @@ class ImagesListViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        tableView.dataSource = self
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTableViewAnimated), name: ImagesListService.DidChangeNotification, object: nil)
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -62,11 +67,26 @@ class ImagesListViewController: UIViewController {
       willDisplay cell: UITableViewCell,
       forRowAt indexPath: IndexPath
     ) {
-        if indexPath.row + 1 == imagesListService.photos.count {
+        if indexPath.row + 1 == photos.count {
             imagesListService.fetchPhotosNextPage()
         } else {
             return
         }
+    }
+    
+    @objc func updateTableViewAnimated() {
+        let oldCount = photos.count
+        let newCount = imagesListService.photos.count
+        photos = imagesListService.photos
+        
+        if oldCount != newCount {
+                    tableView.performBatchUpdates({
+                        let indexPaths = (oldCount..<newCount).map { i in
+                            IndexPath(row: i, section: 0)
+                        }
+                        tableView.insertRows(at: indexPaths, with: .automatic)
+                    }, completion: nil)
+                }
     }
 }
 
@@ -91,20 +111,30 @@ extension ImagesListViewController: UITableViewDelegate {
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return photosName.count
+        return photos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
-        
-        guard let imageListCell = cell as? ImagesListCell else {
-            return UITableViewCell()
-        }
-        
-        cell.selectionStyle = .none
-        configCell(for: imageListCell, with: indexPath)
-        return imageListCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ImagesListCell", for: indexPath) as! ImagesListCell
+               
+               let photo = photos[indexPath.row]
+                              
+               // Используем Kingfisher для загрузки изображения по URL
+               if let url = URL(string: photo.thumbImageURL) {
+                   cell.cellImage.kf.indicatorType = .activity
+                   cell.cellImage.kf.setImage(with: url,
+                                              placeholder: UIImage(named: "placeholder_cell"),
+                                              options: []) { result in
+                       switch result {
+                       case .success(_):
+                           print("zaebis")
+                           tableView.reloadRows(at: [indexPath], with: .automatic)
+                       case .failure(_):
+                           print("huevo")
+                       }
+                   }
+               }
+               
+               return cell
     }
-    
-    
 }
