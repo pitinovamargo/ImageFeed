@@ -66,6 +66,72 @@ final class ImagesListService {
             task.resume()
         }
     }
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+                   guard let token = OAuth2TokenStorage().token else {
+                // Обработка ошибки отсутствия токена
+                let error = NSError(domain: "com.yourapp.error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Missing access token"])
+                completion(.failure(error))
+                return
+            }
+            
+            let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
+            guard let url = URL(string: urlString) else {
+                // Обработка ошибки неверного URL
+                let error = NSError(domain: "com.yourapp.error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+                completion(.failure(error))
+                return
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = isLike ? "POST" : "DELETE"
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            
+            let task = URLSession.shared.dataTask(with: request) { (_, response, error) in
+                if let error = error {
+                    // Обработка ошибки запроса
+                    completion(.failure(error))
+                    return
+                }
+                
+                if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+                    // Обработка ошибки статуса ответа
+                    let error = NSError(domain: "com.yourapp.error", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Request failed with status code \(httpResponse.statusCode)"])
+                    completion(.failure(error))
+                    return
+                }
+                
+                // Запрос выполнен успешно
+                completion(.success(()))
+            }
+            
+            task.resume()
+        }
+
+        
+        
+        
+        
+//        DispatchQueue.main.async {
+//        // Поиск индекса элемента
+//            if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+//                // Текущий элемент
+//                let photo = self.photos[index]
+//                // Копия элемента с инвертированным значением isLiked.
+//                let newPhoto = Photo(
+//                    id: photo.id,
+//                    size: photo.size,
+//                    createdAt: photo.createdAt,
+//                    welcomeDescription: photo.welcomeDescription,
+//                    thumbImageURL: photo.thumbImageURL,
+//                    largeImageURL: photo.largeImageURL,
+//                    isLiked: !photo.isLiked
+//                )
+//                // Заменяем элемент в массиве.
+//                self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
+//            }
+//        }
+    
+    
     private func dateFromString(_ dateString: String) -> Date? {
         let dateFormatter = ISO8601DateFormatter()
         return dateFormatter.date(from: dateString)
@@ -79,7 +145,7 @@ struct Photo { // инфа о полученных фото для описан�
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
-    let isLiked: Bool
+    var isLiked: Bool
 }
 
 struct UrlsResult: Codable {

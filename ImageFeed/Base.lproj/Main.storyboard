@@ -159,6 +159,9 @@
                                                     <rect key="frame" x="356" y="4" width="42" height="42"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="Red Like"/>
+                                                    <connections>
+                                                        <action selector="likeButtonClicked" destination="Hry-ks-HFT" eventType="touchUpInside" id="XJc-oz-tfI"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>

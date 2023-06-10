@@ -13,7 +13,6 @@ final class SingleImageViewController: UIViewController {
             guard isViewLoaded else { return } // 1
             imageView.image = image // 2
             rescaleAndCenterImageInScrollView(image: image)
-
         }
     }
 
