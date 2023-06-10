@@ -30,17 +30,17 @@ class ImagesListViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         tableView.dataSource = self
         NotificationCenter.default.addObserver(self, selector: #selector(updateTableViewAnimated), name: ImagesListService.DidChangeNotification, object: nil)
-
+        imagesListService.fetchPhotosNextPage()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-           if segue.identifier == showSingleImageSegueIdentifier { // 1
-               let viewController = segue.destination as! SingleImageViewController // 2
+           if segue.identifier == showSingleImageSegueIdentifier {
+               let viewController = segue.destination as! SingleImageViewController
                let indexPath = sender as! IndexPath // 3
-               let image = UIImage(named: photosName[indexPath.row]) // 4
-               viewController.image = image // 5
+               let image = UIImage(named: photosName[indexPath.row])
+               viewController.image = image
            } else {
-               super.prepare(for: segue, sender: sender) // 6
+               super.prepare(for: segue, sender: sender)
            }
        }
     
@@ -127,10 +127,9 @@ extension ImagesListViewController: UITableViewDataSource {
                                               options: []) { result in
                        switch result {
                        case .success(_):
-                           print("zaebis")
                            tableView.reloadRows(at: [indexPath], with: .automatic)
-                       case .failure(_):
-                           print("huevo")
+                       case .failure(let error):
+                           print(error)
                        }
                    }
                }

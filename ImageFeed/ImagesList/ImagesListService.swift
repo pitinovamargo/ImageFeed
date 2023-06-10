@@ -24,6 +24,7 @@ final class ImagesListService {
         guard !isFetching else { return }
         isFetching = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            UIBlockingProgressHUD.show()
             guard let url = URL(string: "https://api.unsplash.com/photos?page=\(self.currentPage)&per_page=\(self.itemsPerPage)"),
             let token = OAuth2TokenStorage().token else {
                 self.isFetching = false
@@ -49,13 +50,13 @@ final class ImagesListService {
                             isLiked: photoResult.liked_by_user
                         )
                     }
-                    
                     DispatchQueue.main.async {
                         self.photos.append(contentsOf: newPhotos)
                         NotificationCenter.default.post(name: ImagesListService.DidChangeNotification, object: nil)
                         self.isFetching = false
                         self.currentPage += 1
                         self.lastLoadedPage = self.currentPage - 1
+                        UIBlockingProgressHUD.dismiss()
                     }
                 } catch {
                     print("Error decoding JSON: \(error)")
