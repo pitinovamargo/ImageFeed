@@ -6,14 +6,30 @@
 //
 
 import Foundation
+import SwiftKeychainWrapper
 
 class OAuth2TokenStorage {
+    
     var token: String? {
         get {
-            return UserDefaults.standard.string(forKey: OAuthTokenResponseBody.CodingKeys.accessToken.rawValue)
+            return KeychainWrapper.standard.string(forKey: "accessToken")
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: OAuthTokenResponseBody.CodingKeys.accessToken.rawValue)
+            if let newValue = newValue {
+                do {
+                    let isSuccess = KeychainWrapper.standard.set(newValue, forKey: "accessToken")
+                    guard isSuccess else {
+                        throw KeychainError.saveFailed
+                    }
+                } catch {
+                    print("Ошибка сохранения в Keychain: \(error)")
+                }
+            }
         }
     }
 }
+
+enum KeychainError: Error {
+    case saveFailed
+}
+

@@ -9,17 +9,33 @@ import Foundation
 
 class OAuth2Service {
     
+    private var lastCode: String?
+    private var currentTask: URLSessionTask?
+    
     func fetchAuthToken(
         _ code: String,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
+        assert(Thread.isMainThread)
+        if lastCode == code { return }
+        currentTask?.cancel()
+        lastCode = code
+        
         let request = makeRequest(code)
-        callUnsplash(request: request) { (result: Result<Data, Error>)  in
-            let parsed = result.flatMap { data -> Result<String, Error> in
-                Result{ try JSONDecoder().decode(OAuthTokenResponseBody.self, from: data).accessToken }
+        let task = URLSession.shared.objectTask(for: request) { (result: Result<OAuthTokenResponseBody, Error>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    completion(.success(response.accessToken))
+                case .failure(let error):
+                    completion(.failure(error))
+                    self.lastCode = nil
+                }
+                self.currentTask = nil
             }
-            completion(parsed)
         }
+        currentTask = task
+        task.resume()
     }
     
     private func makeRequest(_ code: String) -> URLRequest {
@@ -37,32 +53,6 @@ class OAuth2Service {
         
         return request
     }
-    
-    private func callUnsplash(
-        request: URLRequest,
-        responseHandler: @escaping (Result<Data, Error>) -> Void
-    ) {
-        let fulfillCompletion: (Result<Data, Error>) -> Void = { result in
-            DispatchQueue.main.async {
-                responseHandler(result)
-            }
-        }
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let error = error {
-                fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
-            }
-            if let responseCode = (response as? HTTPURLResponse)?.statusCode {
-                if 200..<300 ~= responseCode {
-                } else {
-                    fulfillCompletion(.failure(NetworkError.httpStatusCode(responseCode)))
-                }
-            }
-            if let data = data {
-                fulfillCompletion(.success(data))
-            }
-        }
-        task.resume()
-    }
 }
 
 struct OAuthTokenResponseBody: Decodable {
@@ -77,9 +67,4 @@ struct OAuthTokenResponseBody: Decodable {
         case scope
         case createdAt = "created_at"
     }
-}
-
-enum NetworkError: Error {
-    case httpStatusCode(Int)
-    case urlRequestError(Error)
 }

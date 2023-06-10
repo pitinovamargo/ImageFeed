@@ -9,14 +9,34 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    private var profileService = ProfileService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-              
+        
         let profileImage = profileImage()
         let userName = userName()
         let nikname = nikname()
         let profileDescription = profileDescription()
         let logoutButton = logoutButton()
+        
+        if let profile = profileService.getProfile() {
+            userName.text = profile.name
+            nikname.text = profile.loginName
+            profileDescription.text = profile.bio
+        }
+        
+        profileImageServiceObserver = NotificationCenter.default
+            .addObserver(
+                forName: ProfileImageService.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar(profileImage)
+            }
+        updateAvatar(profileImage)
         
         NSLayoutConstraint.activate([
             profileImage.heightAnchor.constraint(equalToConstant: 70),
@@ -32,12 +52,18 @@ final class ProfileViewController: UIViewController {
             logoutButton.heightAnchor.constraint(equalToConstant: 44),
             logoutButton.widthAnchor.constraint(equalToConstant: 44),
             logoutButton.centerYAnchor.constraint(equalTo: profileImage.centerYAnchor),
-            logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24),
+            logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -24)
         ])
     }
     
+    private func updateAvatar(_ profileImage: UIImageView) {
+        profileImage.image = ProfileImageService.shared.avatar.image
+    }
+    
     func profileImage() -> UIImageView {
-        let profileImage = UIImageView(image: UIImage(named: "ProfilePhoto"))
+        let profileImage = UIImageView(image: UIImage(named: "placeholder"))
+        profileImage.layer.cornerRadius = profileImage.frame.size.width / 2
+        profileImage.clipsToBounds = true
         view.addSubview(profileImage)
         profileImage.translatesAutoresizingMaskIntoConstraints = false
         
@@ -85,6 +111,4 @@ final class ProfileViewController: UIViewController {
         
         return logoutButton
     }
-
-
 }
