@@ -8,7 +8,7 @@
 import UIKit
 
 final class ImagesListService {
-
+    
     static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private (set) var photos: [Photo] = [] // тут храним список уже скачанных фотографий
@@ -23,7 +23,7 @@ final class ImagesListService {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             UIBlockingProgressHUD.show()
             guard let url = URL(string: "https://api.unsplash.com/photos?page=\(self.currentPage)&per_page=\(self.itemsPerPage)"),
-            let token = OAuth2TokenStorage().token else {
+                  let token = OAuth2TokenStorage().token else {
                 self.isFetching = false
                 return
             }
@@ -64,45 +64,32 @@ final class ImagesListService {
             task.resume()
         }
     }
+    
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
-                   guard let token = OAuth2TokenStorage().token else {
-                // Обработка ошибки отсутствия токена
-                let error = NSError(domain: "com.yourapp.error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Missing access token"])
-                completion(.failure(error))
-                return
+        guard let token = OAuth2TokenStorage().token else { return }
+        
+        let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
+        let url = URL(string: urlString)!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = isLike ? "POST" : "DELETE"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let task = URLSession.shared.dataTask(with: request) { (_, response, error) in
+            if let error = error {
+                completion(.failure(NetworkError.urlRequestError(error)))
             }
-            
-            let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
-            guard let url = URL(string: urlString) else {
-                // Обработка ошибки неверного URL
-                let error = NSError(domain: "com.yourapp.error", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
-                completion(.failure(error))
-                return
-            }
-            
-            var request = URLRequest(url: url)
-            request.httpMethod = isLike ? "POST" : "DELETE"
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            
-            let task = URLSession.shared.dataTask(with: request) { (_, response, error) in
-                if let error = error {
-                    // Обработка ошибки запроса
-                    completion(.failure(error))
-                    return
+            if let responseCode = (response as? HTTPURLResponse)?.statusCode {
+                if 200..<300 ~= responseCode {
+                } else {
+                    completion(.failure(NetworkError.httpStatusCode(responseCode)))
                 }
-                
-                if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
-                    // Обработка ошибки статуса ответа
-                    let error = NSError(domain: "com.yourapp.error", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Request failed with status code \(httpResponse.statusCode)"])
-                    completion(.failure(error))
-                    return
-                }
-                
-                completion(.success(()))
             }
-            
-            task.resume()
+            completion(.success(()))
         }
+        
+        task.resume()
+    }
     
     private func dateFromString(_ dateString: String) -> Date? {
         let dateFormatter = ISO8601DateFormatter()
