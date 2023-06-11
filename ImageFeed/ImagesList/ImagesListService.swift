@@ -8,10 +8,7 @@
 import UIKit
 
 final class ImagesListService {
-    
-    // отправляется запрос для получения страницы с фотографиями;
-    // сохраняется номер последней скачанной страницы;
-    // после того как скачивание страницы завершено, по необходимости (например, пользователь дошёл до конца списка) отправляется запрос на скачивание следующей страницы.
+
     static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private (set) var photos: [Photo] = [] // тут храним список уже скачанных фотографий
@@ -20,7 +17,7 @@ final class ImagesListService {
     private var currentPage = 1
     private let itemsPerPage = 10
     
-    func fetchPhotosNextPage() { // тут получаем очередную страницу, скачивать больше одной страницы за раз не будем; если идёт закачка — будем отправлять новый запрос только после её завершения.
+    func fetchPhotosNextPage() {
         guard !isFetching else { return }
         isFetching = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -47,6 +44,7 @@ final class ImagesListService {
                             welcomeDescription: photoResult.description,
                             thumbImageURL: photoResult.urls.thumb,
                             largeImageURL: photoResult.urls.regular,
+                            fullImageUrl: photoResult.urls.full,
                             isLiked: photoResult.liked_by_user
                         )
                     }
@@ -100,37 +98,11 @@ final class ImagesListService {
                     return
                 }
                 
-                // Запрос выполнен успешно
                 completion(.success(()))
             }
             
             task.resume()
         }
-
-        
-        
-        
-        
-//        DispatchQueue.main.async {
-//        // Поиск индекса элемента
-//            if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-//                // Текущий элемент
-//                let photo = self.photos[index]
-//                // Копия элемента с инвертированным значением isLiked.
-//                let newPhoto = Photo(
-//                    id: photo.id,
-//                    size: photo.size,
-//                    createdAt: photo.createdAt,
-//                    welcomeDescription: photo.welcomeDescription,
-//                    thumbImageURL: photo.thumbImageURL,
-//                    largeImageURL: photo.largeImageURL,
-//                    isLiked: !photo.isLiked
-//                )
-//                // Заменяем элемент в массиве.
-//                self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)
-//            }
-//        }
-    
     
     private func dateFromString(_ dateString: String) -> Date? {
         let dateFormatter = ISO8601DateFormatter()
@@ -138,13 +110,14 @@ final class ImagesListService {
     }
 }
 
-struct Photo { // инфа о полученных фото для описания отдельного экземпляра фотографии
+struct Photo {
     let id: String
     let size: CGSize
     let createdAt: Date?
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
+    let fullImageUrl: String
     var isLiked: Bool
 }
 

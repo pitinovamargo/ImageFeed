@@ -36,8 +36,9 @@ class ImagesListViewController: UIViewController {
         if segue.identifier == showSingleImageSegueIdentifier {
             let viewController = segue.destination as! SingleImageViewController
             let indexPath = sender as! IndexPath // 3
-            let image = UIImage(named: photosName[indexPath.row])
-            viewController.image = image
+            viewController.fullImageUrl = photos[indexPath.row].fullImageUrl
+//            let image = UIImage(named: photosName[indexPath.row])
+//            viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -158,6 +159,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
                             welcomeDescription: currentPhoto.welcomeDescription,
                             thumbImageURL: currentPhoto.thumbImageURL,
                             largeImageURL: currentPhoto.largeImageURL,
+                            fullImageUrl: currentPhoto.fullImageUrl,
                             isLiked: !currentPhoto.isLiked
                         )
                         self.photos.remove(at: index)
