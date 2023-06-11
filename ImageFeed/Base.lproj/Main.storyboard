@@ -302,7 +302,7 @@
         <!--Navigation Controller-->
         <scene sceneID="sP8-h2-YHh">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Fbg-tC-BTq" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Fbg-tC-BTq" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="nED-tw-hPI"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ymt-UP-coI">

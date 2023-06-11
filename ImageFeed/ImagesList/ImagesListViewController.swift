@@ -37,8 +37,6 @@ class ImagesListViewController: UIViewController {
             let viewController = segue.destination as! SingleImageViewController
             let indexPath = sender as! IndexPath // 3
             viewController.fullImageUrl = photos[indexPath.row].fullImageUrl
-//            let image = UIImage(named: photosName[indexPath.row])
-//            viewController.image = image
         } else {
             super.prepare(for: segue, sender: sender)
         }
@@ -59,10 +57,9 @@ class ImagesListViewController: UIViewController {
         } else {
             cell.likeButton.imageView?.image = UIImage(named: "White Like")
         }
-        
     }
     
-    func tableView( // тут мы будем вызывать функцию загрузки страницы с фото fetchPhotosNextPage()
+    func tableView(
         _ tableView: UITableView,
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
