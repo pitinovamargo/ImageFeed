@@ -31,6 +31,7 @@ class SplashViewController: UIViewController {
                 switch result {
                 case .failure(_):
                     DispatchQueue.main.async {
+                        print("FAIL IMAGE FETCH")
                         self.showAlert()
                     }
                 case .success(_):
