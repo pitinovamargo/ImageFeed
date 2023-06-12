@@ -65,7 +65,8 @@ final class ProfileViewController: UIViewController {
     @objc func profileLogout() {
         let alert = UIAlertController(title: "Пока, пока!", message: "Уверены, что хотите выйти?", preferredStyle: .alert)
         
-        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
+        let yesAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            guard let self = self else { return }
             KeychainWrapper.standard.removeAllKeys()
             self.clean()
             self.switchToSplashViewController()

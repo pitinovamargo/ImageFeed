@@ -28,7 +28,7 @@ class ImagesListViewController: UIViewController {
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         tableView.dataSource = self
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTableViewAnimated), name: ImagesListService.DidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTableViewAnimated), name: ImagesListService.didChangeNotification, object: nil)
         imagesListService.fetchPhotosNextPage()
     }
     
@@ -112,7 +112,7 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ImagesListCell", for: indexPath) as! ImagesListCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImagesListCell", for: indexPath) as? ImagesListCell else { fatalError("Cannot extract cell") }
         cell.delegate = self
         let photo = photos[indexPath.row]
         
@@ -121,10 +121,15 @@ extension ImagesListViewController: UITableViewDataSource {
             cell.cellImage.kf.indicatorType = .activity
             cell.cellImage.kf.setImage(with: url,
                                        placeholder: UIImage(named: "placeholder_cell"),
-                                       options: []) { result in
+                                       options: []) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(_):
-                    cell.dateLabel.text = self.dateFormatter.string(from: photo.createdAt ?? Date())
+                    if let created = photo.createdAt {
+                        cell.dateLabel.text = self.dateFormatter.string(from: created)
+                    } else {
+                        cell.dateLabel.text = ""
+                    }
                     cell.setIsLiked(photo.isLiked)
                     tableView.reloadRows(at: [indexPath], with: .automatic)
                 case .failure(let error):
@@ -142,7 +147,8 @@ extension ImagesListViewController: ImagesListCellDelegate {
         let photo = photos[indexPath.row]
         let isLiked = !photo.isLiked
         UIBlockingProgressHUD.show()
-        imagesListService.changeLike(photoId: photo.id, isLike: isLiked) { result in
+        imagesListService.changeLike(photoId: photo.id, isLike: isLiked) { [weak self] result in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success:

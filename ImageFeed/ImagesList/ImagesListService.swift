@@ -9,7 +9,7 @@ import UIKit
 
 final class ImagesListService {
     
-    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private (set) var photos: [Photo] = [] // тут храним список уже скачанных фотографий
     private var lastLoadedPage: Int? = nil // тут будем хранить номер последней скачанной страницы
@@ -20,7 +20,8 @@ final class ImagesListService {
     func fetchPhotosNextPage() {
         guard !isFetching else { return }
         isFetching = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            guard let self = self else { return }
             UIBlockingProgressHUD.show()
             guard let url = URL(string: "https://api.unsplash.com/photos?page=\(self.currentPage)&per_page=\(self.itemsPerPage)"),
                   let token = OAuth2TokenStorage().token else {
@@ -40,17 +41,18 @@ final class ImagesListService {
                         return Photo(
                             id: photoResult.id,
                             size: CGSize(width: photoResult.width, height: photoResult.height),
-                            createdAt: self.dateFromString(photoResult.created_at),
+                            createdAt: self.dateFromString(photoResult.createdAt),
                             welcomeDescription: photoResult.description,
                             thumbImageURL: photoResult.urls.thumb,
                             largeImageURL: photoResult.urls.regular,
                             fullImageUrl: photoResult.urls.full,
-                            isLiked: photoResult.liked_by_user
+                            isLiked: photoResult.likedByUser
                         )
                     }
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
                         self.photos.append(contentsOf: newPhotos)
-                        NotificationCenter.default.post(name: ImagesListService.DidChangeNotification, object: nil)
+                        NotificationCenter.default.post(name: ImagesListService.didChangeNotification, object: nil)
                         self.isFetching = false
                         self.currentPage += 1
                         self.lastLoadedPage = self.currentPage - 1
@@ -69,7 +71,7 @@ final class ImagesListService {
         guard let token = OAuth2TokenStorage().token else { return }
         
         let urlString = "https://api.unsplash.com/photos/\(photoId)/like"
-        let url = URL(string: urlString)!
+        guard let url = URL(string: urlString) else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = isLike ? "POST" : "DELETE"
@@ -118,14 +120,28 @@ struct UrlsResult: Codable {
 
 struct PhotoResult: Codable {
     let id: String
-    let created_at: String
-    let updated_at: String
+    let createdAt: String
+    let updatedAt: String
     let width: Int
     let height: Int
     let color: String
-    let blur_hash: String
+    let blurHash: String
     let likes: Int
-    let liked_by_user: Bool
+    let likedByUser: Bool
     let description: String?
     let urls: UrlsResult
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case width
+        case height
+        case color
+        case blurHash = "blur_hash"
+        case likes
+        case likedByUser = "liked_by_user"
+        case description
+        case urls
+    }
 }
