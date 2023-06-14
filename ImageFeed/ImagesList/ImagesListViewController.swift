@@ -33,9 +33,10 @@ class ImagesListViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("Seque id: \(segue.identifier)")
         if segue.identifier == showSingleImageSegueIdentifier {
             let viewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath // 3
+            let indexPath = sender as! IndexPath
             viewController.fullImageUrl = photos[indexPath.row].fullImageUrl
         } else {
             super.prepare(for: segue, sender: sender)
@@ -90,8 +91,9 @@ class ImagesListViewController: UIViewController {
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("зашли в ф-цию для перехода по сегвею на полноэкранную картинку")
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
-        
+        print("перешли по сегвею")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -116,7 +118,6 @@ extension ImagesListViewController: UITableViewDataSource {
         cell.delegate = self
         let photo = photos[indexPath.row]
         
-        // Используем Kingfisher для загрузки изображения по URL
         if let url = URL(string: photo.thumbImageURL) {
             cell.cellImage.kf.indicatorType = .activity
             cell.cellImage.kf.setImage(with: url,

@@ -11,8 +11,8 @@ final class ImagesListService {
     
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
-    private (set) var photos: [Photo] = [] // тут храним список уже скачанных фотографий
-    private var lastLoadedPage: Int? = nil // тут будем хранить номер последней скачанной страницы
+    private (set) var photos: [Photo] = []
+    private var lastLoadedPage: Int? = nil
     private var isFetching = false
     private var currentPage = 1
     private let itemsPerPage = 10
