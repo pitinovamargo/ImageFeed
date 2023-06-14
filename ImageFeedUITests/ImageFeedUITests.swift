@@ -27,7 +27,7 @@ final class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         
         loginTextField.tap()
-        loginTextField.typeText("pitinovamargo@gmail.com")
+        loginTextField.typeText("")
         app.tap()
         webView.swipeUp()
         
@@ -35,7 +35,7 @@ final class ImageFeedUITests: XCTestCase {
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         
         passwordTextField.tap()
-        passwordTextField.typeText("JGK.Ih4935jew.")
+        passwordTextField.typeText("")
         webView.swipeUp()
         
         print(app.debugDescription)
