@@ -20,7 +20,8 @@ final class ProfileImageService {
         
         var request = URLRequest(url: url)
         request.setValue("Bearer \(OAuth2TokenStorage().token ?? "")", forHTTPHeaderField: "Authorization")
-        let task = URLSession.shared.objectTask(for: request) { (result: Result<UserResult, Error>) in
+        let task = URLSession.shared.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(let userResult):

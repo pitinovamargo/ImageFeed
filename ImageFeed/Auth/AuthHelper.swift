@@ -12,8 +12,8 @@ protocol AuthHelperProtocol {
     func code(from url: URL) -> String?
 }
 
-class AuthHelper: AuthHelperProtocol {
-    let configuration: AuthConfiguration
+final class AuthHelper: AuthHelperProtocol {
+    private let configuration: AuthConfiguration
     
     init(configuration: AuthConfiguration = .standard) {
         self.configuration = configuration

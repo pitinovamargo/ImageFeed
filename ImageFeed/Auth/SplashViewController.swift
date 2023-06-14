@@ -27,11 +27,12 @@ class SplashViewController: UIViewController {
         
         if let token = OAuth2TokenStorage().token {
             self.profileService.fetchProfile(token)
-            self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { result in
+            self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { [weak self] result in
+                guard let self = self else { return }
                 switch result {
-                case .failure(_):
+                case .failure(let error):
                     DispatchQueue.main.async {
-                        print("FAIL IMAGE FETCH")
+                        assertionFailure(error.localizedDescription)
                         self.showAlert()
                     }
                 case .success(_):
@@ -67,7 +68,8 @@ extension SplashViewController: AuthViewControllerDelegate {
                 case .success(let accessToken):
                     OAuth2TokenStorage().token = accessToken
                     self.profileService.fetchProfile(accessToken)
-                    self.profileImageService.fetchProfileImageURL(username: self.profileService.getProfile()?.username ?? "") { result in
+                    self.profileImageService.fetchProfileImageURL(username: self.profileService.getProfile()?.username ?? "") { [weak self] result in
+                        guard let self = self else { return }
                         UIBlockingProgressHUD.dismiss()
                         switch result {
                         case .failure(_):

@@ -9,7 +9,7 @@ import UIKit
 import ProgressHUD
 
 final class AuthViewController: UIViewController {
-    let showWebViewIdentifier = "ShowWebView"
+    private let showWebViewIdentifier = "ShowWebView"
     weak var delegate: AuthViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -20,7 +20,7 @@ final class AuthViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
         if segue.identifier == "ShowWebView" {
             guard let webViewViewController = segue.destination as? WebViewViewController
-            else { fatalError("Failed to prepare for WebViewViewController") }
+            else { return assertionFailure("Failed to prepare for WebViewViewController") }
             let authHelper = AuthHelper()
             let webViewPresenter = WebViewPresenter(authHelper: authHelper)
             webViewViewController.presenter = webViewPresenter
