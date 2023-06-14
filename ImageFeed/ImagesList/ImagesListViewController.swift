@@ -90,9 +90,7 @@ class ImagesListViewController: UIViewController {
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("зашли в ф-цию для перехода по сегвею на полноэкранную картинку")
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
-        print("перешли по сегвею")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
