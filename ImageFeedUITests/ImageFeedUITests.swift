@@ -8,10 +8,10 @@
 import XCTest
 
 final class ImageFeedUITests: XCTestCase {
-    let email = "pitinovamargo@gmail.com"
-    let password = "JGK.Ih4935jew."
-    let fullname = "Margarita Pitinova"
-    let username = "@pitinovamargo"
+    let email = ""
+    let password = ""
+    let fullname = ""
+    let username = ""
     
     private let app = XCUIApplication()
     
