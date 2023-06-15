@@ -13,7 +13,6 @@ class ImagesListViewController: UIViewController {
     
     @IBOutlet weak private var tableView: UITableView!
     
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private let imagesListService = ImagesListService()
     private var photos: [Photo] = []
     
