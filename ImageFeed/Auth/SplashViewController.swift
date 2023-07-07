@@ -11,6 +11,7 @@ class SplashViewController: UIViewController {
     
     private var profileService = ProfileService.shared
     private var profileImageService = ProfileImageService.shared
+    private var oauthService = OAuth2Service()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +28,12 @@ class SplashViewController: UIViewController {
         
         if let token = OAuth2TokenStorage().token {
             self.profileService.fetchProfile(token)
-            self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { result in
+            self.profileImageService.fetchProfileImageURL(username: profileService.getProfile()?.username ?? "") { [weak self] result in
+                guard let self = self else { return }
                 switch result {
-                case .failure(_):
+                case .failure(let error):
                     DispatchQueue.main.async {
+                        assertionFailure(error.localizedDescription)
                         self.showAlert()
                     }
                 case .success(_):
@@ -60,13 +63,14 @@ class SplashViewController: UIViewController {
 extension SplashViewController: AuthViewControllerDelegate {
     func acceptToken(code: String) {
         UIBlockingProgressHUD.show()
-        OAuth2Service().fetchAuthToken(code) { result in
+        oauthService.fetchAuthToken(code) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let accessToken):
                     OAuth2TokenStorage().token = accessToken
                     self.profileService.fetchProfile(accessToken)
-                    self.profileImageService.fetchProfileImageURL(username: self.profileService.getProfile()?.username ?? "") { result in
+                    self.profileImageService.fetchProfileImageURL(username: self.profileService.getProfile()?.username ?? "") { [weak self] result in
+                        guard let self = self else { return }
                         UIBlockingProgressHUD.dismiss()
                         switch result {
                         case .failure(_):

@@ -18,7 +18,8 @@ final class ProfileService {
     private let semaphore = DispatchSemaphore(value: 0)
     
     func fetchProfile(_ token: String) {
-        self.fetchProfile(token) { result in
+        self.fetchProfile(token) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let profile):
                 self.profile = profile

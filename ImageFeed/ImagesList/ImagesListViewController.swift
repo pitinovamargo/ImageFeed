@@ -13,7 +13,6 @@ class ImagesListViewController: UIViewController {
     
     @IBOutlet weak private var tableView: UITableView!
     
-    private let photosName: [String] = Array(0..<20).map{ "\($0)" }
     private let imagesListService = ImagesListService()
     private var photos: [Photo] = []
     
@@ -35,7 +34,7 @@ class ImagesListViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
             let viewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath // 3
+            guard let indexPath = sender as? IndexPath else { return }
             viewController.fullImageUrl = photos[indexPath.row].fullImageUrl
         } else {
             super.prepare(for: segue, sender: sender)
@@ -91,7 +90,6 @@ extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -116,7 +114,6 @@ extension ImagesListViewController: UITableViewDataSource {
         cell.delegate = self
         let photo = photos[indexPath.row]
         
-        // Используем Kingfisher для загрузки изображения по URL
         if let url = URL(string: photo.thumbImageURL) {
             cell.cellImage.kf.indicatorType = .activity
             cell.cellImage.kf.setImage(with: url,
